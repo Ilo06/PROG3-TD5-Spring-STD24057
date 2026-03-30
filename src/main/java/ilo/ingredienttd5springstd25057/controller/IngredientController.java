@@ -5,6 +5,7 @@ import ilo.ingredienttd5springstd25057.repository.IngredientRepository;
 import ilo.ingredienttd5springstd25057.service.IngredientService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -27,5 +28,18 @@ public class IngredientController {
         } catch (Exception ex) {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @GetMapping("/ingredients/{id}")
+    public ResponseEntity<?> getIngredientById(@PathVariable Integer id) {
+        Ingredient ingredient = ingredientService.getIngredientById(id);
+
+        if (ingredient == null) {
+            return ResponseEntity
+                    .status(404)
+                    .body("Ingredient.id=" + id + " is not found");
+        }
+
+        return ResponseEntity.ok(ingredient);
     }
 }

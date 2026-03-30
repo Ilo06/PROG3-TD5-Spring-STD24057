@@ -45,4 +45,30 @@ public class IngredientRepository {
 
         return ingredients;
     }
+
+    public Ingredient getIngredientById(Integer id) {
+        String sql = "select id, name, price, category from ingredient where id = ?";
+
+        try (
+                Connection connection = dataSource.getConnection();
+                PreparedStatement ps = connection.prepareStatement(sql);
+        ) {
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return new Ingredient(
+                        rs.getInt("id"),
+                        rs.getString("name"),
+                        CategoryEnum.valueOf(rs.getString("category")),
+                        rs.getDouble("price")
+                );
+            } else {
+                return null;
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

@@ -18,4 +18,8 @@ public class IngredientService {
     public List<Ingredient> getIngredients() {
         return ingredientRepository.getIngredients();
     }
+
+    public Ingredient getIngredientById(Integer id) {
+        return ingredientRepository.getIngredientById(id);
+    }
 }
