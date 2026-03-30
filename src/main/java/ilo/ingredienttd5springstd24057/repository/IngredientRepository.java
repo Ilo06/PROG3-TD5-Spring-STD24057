@@ -1,7 +1,7 @@
-package ilo.ingredienttd5springstd25057.repository;
+package ilo.ingredienttd5springstd24057.repository;
 
-import ilo.ingredienttd5springstd25057.entity.CategoryEnum;
-import ilo.ingredienttd5springstd25057.entity.Ingredient;
+import ilo.ingredienttd5springstd24057.entity.CategoryEnum;
+import ilo.ingredienttd5springstd24057.entity.Ingredient;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;

@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>ilo</groupId>
-    <artifactId>ingredient-td5-spring-STD25057</artifactId>
+    <artifactId>ingredient-td5-spring-STD24057</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>ingredient-td5-spring-STD25057</name>
     <description>ingredient-td5-spring-STD25057</description>

@@ -1,4 +1,4 @@
-package ilo.ingredienttd5springstd25057;
+package ilo.ingredienttd5springstd24057;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
