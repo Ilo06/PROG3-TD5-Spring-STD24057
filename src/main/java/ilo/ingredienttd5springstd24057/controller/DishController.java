@@ -17,25 +17,21 @@ public class DishController {
         this.dishService = dishService;
     }
 
-    // d) GET /dishes
     @GetMapping("/dishes")
     public ResponseEntity<List<Dish>> getDishes() {
         return ResponseEntity.ok(dishService.getDishes());
     }
 
-    // e) PUT /dishes/{id}/ingredients
     @PutMapping("/dishes/{id}/ingredients")
     public ResponseEntity<?> updateDishIngredients(
             @PathVariable Integer id,
             @RequestBody(required = false) List<Ingredient> ingredients) {
 
-        // Request body is mandatory
         if (ingredients == null) {
             return ResponseEntity.status(400)
                     .body("Request body is required and must contain a list of ingredients.");
         }
 
-        // Check dish exists
         Dish dish = dishService.getDishById(id);
         if (dish == null) {
             return ResponseEntity.status(404)

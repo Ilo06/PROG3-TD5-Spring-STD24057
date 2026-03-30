@@ -19,13 +19,11 @@ public class IngredientController {
         this.ingredientService = ingredientService;
     }
 
-    // a) GET /ingredients
     @GetMapping("/ingredients")
     public ResponseEntity<List<Ingredient>> getIngredients() {
         return ResponseEntity.ok(ingredientService.getIngredients());
     }
 
-    // b) GET /ingredients/{id}
     @GetMapping("/ingredients/{id}")
     public ResponseEntity<?> getIngredientById(@PathVariable Integer id) {
         Ingredient ingredient = ingredientService.getIngredientById(id);
@@ -36,27 +34,23 @@ public class IngredientController {
         return ResponseEntity.ok(ingredient);
     }
 
-    // c) GET /ingredients/{id}/stock?at={temporal}&unit={unit}
     @GetMapping("/ingredients/{id}/stock")
     public ResponseEntity<?> getIngredientStock(
             @PathVariable Integer id,
             @RequestParam(required = false) String at,
             @RequestParam(required = false) String unit) {
 
-        // Validate mandatory query params
         if (at == null || unit == null) {
             return ResponseEntity.status(400)
                     .body("Either mandatory query parameter `at` or `unit` is not provided.");
         }
 
-        // Validate ingredient exists
         Ingredient ingredient = ingredientService.getIngredientById(id);
         if (ingredient == null) {
             return ResponseEntity.status(404)
                     .body("Ingredient.id=" + id + " is not found");
         }
 
-        // Parse params
         Instant atInstant;
         UnitEnum unitEnum;
         try {

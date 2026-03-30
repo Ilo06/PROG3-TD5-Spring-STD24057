@@ -17,10 +17,6 @@ public class StockMovementRepository {
         this.dataSource = dataSource;
     }
 
-    /**
-     * Returns the stock value for a given ingredient at a given point in time,
-     * filtered to the requested unit.
-     */
     public StockValue getStockValueAt(Integer ingredientId, Instant at, UnitEnum unit) {
         String sql = """
                 SELECT unit,

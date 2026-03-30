@@ -108,10 +108,6 @@ public class DishRepository {
         return list;
     }
 
-    /**
-     * Replaces the full list of ingredients for the given dish.
-     * Ingredients whose id doesn't exist in DB are silently ignored.
-     */
     public Dish updateDishIngredients(Integer dishId, List<Ingredient> requestedIngredients) {
         // Resolve only existing ingredients from DB
         List<Ingredient> validIngredients = new ArrayList<>();
@@ -120,20 +116,17 @@ public class DishRepository {
             if (fromDb != null) {
                 validIngredients.add(fromDb);
             }
-            // unknown ingredients are silently ignored per spec
         }
 
         try (Connection conn = dataSource.getConnection()) {
             conn.setAutoCommit(false);
 
-            // Detach all current ingredients for this dish
             try (PreparedStatement del = conn.prepareStatement(
                     "DELETE FROM dish_ingredient WHERE id_dish = ?")) {
                 del.setInt(1, dishId);
                 del.executeUpdate();
             }
 
-            // Attach the validated ones (required_quantity / unit stay NULL since they are not in request)
             String insertSql = "INSERT INTO dish_ingredient (id_dish, id_ingredient) VALUES (?, ?)";
             try (PreparedStatement ins = conn.prepareStatement(insertSql)) {
                 for (Ingredient ing : validIngredients) {
