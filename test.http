@@ -1,0 +1,101 @@
+### Get all ingredients
+GET localhost:8080/ingredients
+
+### Get ingredient by ID (exists)
+GET localhost:8080/ingredients/1
+
+### Get ingredient by ID (not found)
+GET localhost:8080/ingredients/999
+
+### Get stock value at specific time
+GET localhost:8080/ingredients/1/stock?at=2024-01-06T12:00:00Z&unit=KG
+
+### Get stock value - missing parameters
+GET localhost:8080/ingredients/1/stock
+
+### Get all dishes
+GET localhost:8080/dishes
+
+### Associate ingredients to dish (replace all existing ingredients)
+PUT localhost:8080/dishes/1/ingredients
+Content-Type: application/json
+
+[
+  {
+    "ingredient": {
+      "id": 1000
+    },
+    "quantity_required": 2.5,
+    "unit": "KG"
+  },
+  {
+    "ingredient": {
+      "id": 3
+    },
+    "quantity_required": 1,
+    "unit": "PCS"
+  },
+  {
+    "ingredient": {
+      "id": 5
+    },
+    "quantity_required": 3,
+    "unit": "PCS"
+  }
+]
+
+### Dissociate all ingredients from dish (empty list)
+PUT localhost:8080/dishes/1/ingredients
+Content-Type: application/json
+
+[]
+
+### Get stock movements for ingredient within date range
+GET localhost:8080/ingredients/1/stockMovements?from=2024-01-01T00:00:00Z&to=2024-12-31T23:59:59Z
+
+### Get stock movements - narrow date range (only some results)
+GET localhost:8080/ingredients/1/stockMovements?from=2024-01-05T00:00:00Z&to=2024-01-05T23:59:59Z
+
+### Get stock movements - ingredient not found
+GET localhost:8080/ingredients/999/stockMovements?from=2024-01-01T00:00:00Z&to=2024-12-31T23:59:59Z
+
+### Add stock movements to an ingredient
+POST localhost:8080/ingredients/1/stockMovements
+Content-Type: application/json
+
+[
+  {
+    "unit": "KG",
+    "quantity": 2.5,
+    "type": "IN"
+  },
+  {
+    "unit": "KG",
+    "quantity": 0.5,
+    "type": "OUT"
+  }
+]
+
+### Add a single stock movement
+POST localhost:8080/ingredients/3/stockMovements
+Content-Type: application/json
+
+[
+  {
+    "unit": "KG",
+    "quantity": 5.0,
+    "type": "IN"
+  }
+]
+
+### Add stock movements - ingredient not found
+POST localhost:8080/ingredients/999/stockMovements
+Content-Type: application/json
+
+[
+  {
+    "unit": "KG",
+    "quantity": 1.0,
+    "type": "IN"
+  }
+]
