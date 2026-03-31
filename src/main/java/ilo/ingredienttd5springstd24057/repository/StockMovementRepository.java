@@ -57,9 +57,7 @@ public class StockMovementRepository {
         }
     }
 
-    /**
-     * Returns stock movements for a given ingredient filtered by a datetime range [from, to].
-     */
+
     public List<StockMovement> getStockMovementsByIngredientIdAndDateRange(
             Integer ingredientId, Instant from, Instant to) {
 
@@ -100,10 +98,7 @@ public class StockMovementRepository {
         return movements;
     }
 
-    /**
-     * Saves a list of stock movement creation requests for a given ingredient,
-     * setting creation_datetime to now, and returns the persisted StockMovement objects.
-     */
+
     public List<StockMovement> saveStockMovements(
             Integer ingredientId, List<StockMovementCreateRequest> requests) {
 
