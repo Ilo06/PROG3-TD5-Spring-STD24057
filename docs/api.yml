@@ -1,0 +1,43 @@
+openapi: 3.10
+info:
+  title: 'Ingredient API'
+  version: '1.0'
+servers:
+  - url: "http://localhost:8080/"
+paths:
+  '/ingredients':
+    get:
+      summary: "Get all ingredients"
+      responses:
+        '200':
+          description: "A list of ingredients"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Ingredient'
+
+
+
+
+
+
+components:
+  schemas:
+    Ingredient:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: "Sugar"
+        category:
+          type: number
+          example: "Other"
+        price:
+          type: number
+          example: 2.99
+
