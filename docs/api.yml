@@ -1,16 +1,20 @@
-openapi: 3.10
+openapi: 3.0.3
 info:
-  title: 'Ingredient API'
-  version: '1.0'
+  title: Ingredient & Dish API
+  description: API for managing ingredients, stock movements, and dishes.
+  version: 1.0.0
 servers:
-  - url: "http://localhost:8080/"
+  - url: http://localhost:8080
+
 paths:
-  '/ingredients':
+
+  /ingredients:
     get:
-      summary: "Get all ingredients"
+      summary: Get all ingredients
+      operationId: getIngredients
       responses:
         '200':
-          description: "A list of ingredients"
+          description: A list of all ingredients
           content:
             application/json:
               schema:
@@ -18,13 +22,36 @@ paths:
                 items:
                   $ref: '#/components/schemas/Ingredient'
 
-
-
-
+  /ingredients/{id}:
+    get:
+      summary: Get ingredient by ID
+      operationId: getIngredientById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The ingredient ID
+      responses:
+        '200':
+          description: The ingredient with the given ID
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ingredient'
+        '404':
+          description: Ingredient not found
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "Ingredient.id=999 is not found"
 
 
 components:
   schemas:
+
     Ingredient:
       type: object
       properties:
@@ -35,9 +62,100 @@ components:
           type: string
           example: "Sugar"
         category:
-          type: number
-          example: "Other"
+          $ref: '#/components/schemas/CategoryEnum'
         price:
           type: number
+          format: double
           example: 2.99
 
+    StockValue:
+      type: object
+      properties:
+        quantity:
+          type: number
+          format: double
+          example: 5.0
+        unit:
+          $ref: '#/components/schemas/UnitEnum'
+
+    Dish:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: "Pasta Bolognese"
+        sellingPrice:
+          type: number
+          format: double
+          nullable: true
+          example: 12.50
+        dishType:
+          $ref: '#/components/schemas/DishTypeEnum'
+        dishIngredients:
+          type: array
+          items:
+            $ref: '#/components/schemas/DishIngredient'
+
+    DishIngredient:
+      type: object
+      properties:
+        ingredient:
+          $ref: '#/components/schemas/Ingredient'
+        quantity:
+          type: number
+          format: double
+          nullable: true
+          example: 2.5
+        unit:
+          $ref: '#/components/schemas/UnitEnum'
+
+    DishIngredientRequest:
+      type: object
+      required:
+        - ingredient
+        - quantity_required
+        - unit
+      properties:
+        ingredient:
+          type: object
+          required:
+            - id
+          properties:
+            id:
+              type: integer
+              example: 1
+        quantity_required:
+          type: number
+          format: double
+          example: 2.5
+        unit:
+          $ref: '#/components/schemas/UnitEnum'
+
+    CategoryEnum:
+      type: string
+      enum:
+        - VEGETABLE
+        - ANIMAL
+        - MARINE
+        - DAIRY
+        - OTHER
+      example: OTHER
+
+    UnitEnum:
+      type: string
+      enum:
+        - PCS
+        - KG
+        - L
+      example: KG
+
+    DishTypeEnum:
+      type: string
+      enum:
+        - STARTER
+        - MAIN
+        - DESSERT
+      example: MAIN
