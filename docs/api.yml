@@ -48,6 +48,52 @@ paths:
                 type: string
                 example: "Ingredient.id=999 is not found"
 
+  /ingredients/{id}/stock:
+    get:
+      summary: Get stock value of an ingredient at a specific time
+      operationId: getIngredientStock
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The ingredient ID
+        - name: at
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date-time
+          description: (e.g. 2024-01-06T12:00:00Z)
+        - name: unit
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/UnitEnum'
+          description: The unit in which to return the stock quantity
+      responses:
+        '200':
+          description: The stock value at the specified time
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StockValue'
+        '400':
+          description: Missing or invalid query parameters
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "Either mandatory query parameter `at` or `unit` is not provided."
+        '404':
+          description: Ingredient not found
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "Ingredient.id=999 is not found"
+
 
 components:
   schemas:
