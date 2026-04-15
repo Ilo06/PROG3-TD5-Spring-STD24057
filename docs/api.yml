@@ -94,6 +94,79 @@ paths:
                 type: string
                 example: "Ingredient.id=999 is not found"
 
+  /dishes:
+    get:
+      summary: Get all dishes
+      operationId: getDishes
+      responses:
+        '200':
+          description: A list of all dishes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Dish'
+
+  /dishes/{id}/ingredients:
+    put:
+      summary: Replace all ingredients of a dish
+      operationId: updateDishIngredients
+      description: >
+        Replaces all ingredients associated with the given dish.
+        Send an empty array to dissociate all ingredients.
+        Ingredients with non-existing IDs are silently ignored.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: The dish ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/DishIngredientRequest'
+            examples:
+              withIngredients:
+                summary: Associate multiple ingredients
+                value:
+                  - ingredient:
+                      id: 1
+                    quantity_required: 2.5
+                    unit: KG
+                  - ingredient:
+                      id: 3
+                    quantity_required: 1
+                    unit: PCS
+              empty:
+                summary: Dissociate all ingredients
+                value: []
+      responses:
+        '200':
+          description: The updated dish with its new ingredients
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Dish'
+        '400':
+          description: Request body is missing or invalid
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "Request body is required and must contain a list of ingredients."
+        '404':
+          description: Dish not found
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: "Dish.id=999 is not found"
 
 components:
   schemas:
